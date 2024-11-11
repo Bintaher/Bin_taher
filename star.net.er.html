@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ستار نت</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            padding: 20px; 
+            margin: 0;
+            background: linear-gradient(135deg, #6a1b9a, #000000); /* خلفية متدرجة بنفسجي وأسود */
+            color: #fff; /* نص أبيض */
+            height: 100vh; /* ملء الشاشة بالكامل */
+            display: flex; /* استخدام flexbox لتوسيع المحتوى */
+            flex-direction: column; /* ترتيب المحتوى عموديًا */
+            justify-content: center; /* مركز المحتوى عموديًا */
+        }
+        h1 {
+            font-size: 3em; /* حجم خط أكبر */
+            margin-bottom: 10px; /* مسافة بين العنوان والنص */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* تأثير ظل للنص */
+            opacity: 0; /* يجعل النص غير مرئي في البداية */
+            animation: fadeIn 1s forwards; /* تأثير ظهور */
+            animation-delay: 1s; /* تأخير قبل البدء */
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        p {
+            font-size: 1.2em; /* حجم خط أكبر للنص */
+            color: #fff; /* لون نص أبيض */
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6); /* تأثير ظل للنص */
+            opacity: 0; /* يجعل النص غير مرئي في البداية */
+            animation: fadeIn 1s forwards; /* تأثير ظهور */
+            animation-delay: 1.5s; /* تأخير قبل البدء */
+        }
+        .button-container { 
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+            gap: 15px; 
+            margin-top: 20px; 
+            opacity: 0; /* يجعل النص غير مرئي في البداية */
+            animation: fadeIn 1s forwards; /* تأثير ظهور */
+            animation-delay: 2s; /* تأخير قبل البدء */
+        }
+        .button { 
+            padding: 15px; 
+            border: none; 
+            border-radius: 10px; 
+            font-size: 1.2em; 
+            cursor: pointer; 
+            transition: transform 0.2s; 
+            color: white; /* نص زر */
+            width: 45%; /* عرض الزر */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* ظل */
+        }
+        .button:hover { 
+            transform: scale(1.05); /* تكبير الزر عند التمرير عليه */
+        }
+        .button.green { background-color: #4caf50; } /* زر أخضر */
+        .button.orange { background-color: #ff9800; } /* زر برتقالي */
+        .button.blue { background-color: #2196f3; } /* زر أزرق */
+        .button.red { background-color: #f44336; } /* زر أحمر */
+        .button.yellow { background-color: #ffc107; } /* زر أصفر */
+        #content { display: none; padding-top: 20px; }
+        #displayArea { 
+            padding: 20px; 
+            border-radius: 10px; 
+            background-color: rgba(255, 255, 255, 0.9); 
+            color: black; 
+            margin-top: 20px; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* ظل للصندوق */
+        }
+        h3 {
+            color: #2c3e50; /* لون عناوين الفقرات */
+            margin-bottom: 10px; /* مسافة تحت العنوان */
+        }
+        #speedResult {
+            margin-top: 20px;
+            font-size: 1.5em;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>ستار نت</h1>
+    <p>حيث السرعة والانترنت</p>
+
+    <div style="display: flex; justify-content: center;">
+        <button class="button green" id="btnEnter" onclick="showContent()">دخول</button>
+    </div>
+
+    <div id="content">
+        <div class="button-container">
+            <button class="button blue" onclick="showPackages()">عروض الباقات</button>
+            <button class="button red" onclick="showLimitedOffers()">زيادة بنسبة</button>
+            <button class="button orange" onclick="openWhatsApp()">خدمة الإنترنت إلى منزلك</button>
+            <button class="button yellow" onclick="openBilling()">استعلام عن الرصيد</button>
+        </div>
+        <div class="button-container">
+            <button class="button blue" onclick="measureSpeed()">قياس سرعة الإنترنت</button>
+            <button class="button red" onclick="showStores()">نقاط البيع</button>
+        </div>
+        
+        <div id="displayArea"></div>
+        <div id="speedResult"></div> <!-- قسم عرض النتيجة -->
+    </div>
+
+    <script>
+        function showContent() {
+            document.getElementById('content').style.display = 'block'; // عرض المحتوى
+            document.querySelector('#btnEnter').style.display = 'none'; // إخفاء زر "دخول"
+        }
+
+        // دالة لقياس سرعة الإنترنت
+        function measureSpeed() {
+            const startTime = new Date().getTime();
+            const imageUrl = "https://www.gstatic.com/webp/gallery/2.jpg"; // صورة صغيرة لاختبار التحميل
+            const img = new Image();
+            
+            img.onload = function() {
+                const endTime = new Date().getTime();
+                const duration = (endTime - startTime) / 1000; // الزمن الذي استغرقه التحميل بالثواني
+                const fileSizeInBytes = 117000; // حجم الصورة (قيمة تقريبية بالكيلوبايت)
+                const speedMbps = (fileSizeInBytes * 8 / duration) / 1000000; // حساب السرعة بالميجابت لكل ثانية
+
+                document.getElementById("speedResult").innerHTML = `
+                    <h3>نتيجة قياس سرعة الإنترنت</h3>
+                    <p>السرعة: ${speedMbps.toFixed(2)} Mbps</p>
+                `;
+            }
+
+            img.onerror = function() {
+                document.getElementById("speedResult").innerHTML = "<h3>حدث خطأ أثناء قياس السرعة</h3><p>يرجى المحاولة لاحقًا.</p>";
+            }
+
+            img.src = imageUrl; // بدء تحميل الصورة
+        }
+
+        // دوال أخرى
+        function showPackages() {
+            document.getElementById('displayArea').innerHTML = "<h3>عروض الباقات</h3><p>200 R - 800M<br>500 R - 2G<br>1000 R - 4G<br>5000 R - 20G</p>";
+        }
+
+        function showLimitedOffers() {
+            document.getElementById('displayArea').innerHTML = "<h3>زيادة بنسبة</h3><p>عرض العيد - 20% زيادة<br>عرض رمضان - 30% زيادة</p>";
+        }
+
+        function openWhatsApp() {
+            window.location.href = "https://wa.me/780483098";
+        }
+
+        function openBilling() {
+            window.open("http://10.0.0.1", "_blank"); // فتح رابط الاستعلام عن الرصيد في تبويب جديد
+        }
+
+        function showStores() {
+            document.getElementById('displayArea').innerHTML = "<h3>نقاط البيع</h3><p>نقطة بيع 1<br>نقطة بيع 2<br>نقطة بيع 3</p>";
+        }
+    </script>
+
+</body>
+</html>
